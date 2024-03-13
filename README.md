@@ -61,6 +61,7 @@ head(processedData)
 ```
 </p>
 </details>
+
 ## Example 1: Process data and then go directly into calculating relative quantitative values (RQVs)
 Format your data and calculate 2^-deltaCT values for downstream analyses.
 ``` r
