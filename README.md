@@ -19,6 +19,7 @@ data<-read.table('qPCR data2.txt', na.strings = "",fill = TRUE,header = T)
 conditionKey<-read.csv('conditionKey2.csv')
 
 #view data:
+#Note: imported data can be formated in different ways. Minimium is three columns that have 1) sample name 2) gene name 3) CT values.
 head(data)
   Well Sample_Name Target_Name    Task Reporter Quencher       CT
 1   B4         S10        RPS9 UNKNOWN      VIC  NFQ-MGB 23.47855
@@ -46,6 +47,20 @@ processedData<-quickProcess(data_df = data,
                              CT_num = 7, #column number with your CT information in data_df
                              conditionKey_df = conditionKey)
 ```
+<details><summary>Expected output</summary>
+<p>
+``` r
+head(processedData)
+  Sample_Name Condition Target_Gene      CT1      CT2      CT3 Average_CT Standard_Deviation       dCT twoToNeg_dCT
+2         S10   Control        LGR5 34.50635 34.58119 34.78944   34.62566         0.14668779 11.123009 0.0004483741
+3         S10   Control       MKI67 26.74216 26.89423 26.73264   26.78967         0.09066912  3.287024 0.1024488589
+4         S10   Control       OLFM4 27.40610 27.65227 27.60735   27.55524         0.13109659  4.052591 0.0602626812
+5         S10   Control        CDH1 25.07976 24.87838       NA   24.97907         0.14239835  1.476416 0.3593804231
+1         S10   Control        RPS9 23.47855 23.50337 23.52603   23.50265         0.02374695        NA           NA
+7         S11   Control        LGR5 34.75470 35.09823 34.24502   34.69932         0.42929086 11.898335 0.0002619657
+```
+</p>
+</details>
 ## Example 1: Process data and then go directly into calculating relative quantitative values (RQVs)
 Format your data and calculate 2^-deltaCT values for downstream analyses.
 ``` r
