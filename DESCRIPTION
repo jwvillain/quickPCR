@@ -1,0 +1,10 @@
+Package: quickPCR
+Type: Package
+Title: Collection of functions for analyzing qPCR data.
+Version: 0.1.0
+Author: Jonathan W. Villanueva
+Maintainer: Jonathan W. Villanueva <jovillan@umich.edu>
+Description: Package with a series of functions designed to automate qPCR analysis. Takes in a dataframe of CT values and an annotation file to format qPCR data and calculate 2^-dCT for downstream analyses.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
