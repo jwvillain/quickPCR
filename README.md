@@ -20,7 +20,7 @@ data<-read.table('qPCR data2.txt', na.strings = "",fill = TRUE,header = T)
 conditionKey<-read.csv('conditionKey2.csv')
 
 #view data:
-#Note: imported data can be formated in different ways. Minimium is three columns that have 1) sample name 2) gene name 3) CT values.
+#Note: imported data can be formated in different ways. Minimium for the imported data is three columns defining the 1) sample names 2) gene names 3) CT values.
 head(data)
   Well Sample_Name Target_Name    Task Reporter Quencher       CT
 1   B4         S10        RPS9 UNKNOWN      VIC  NFQ-MGB 23.47855
