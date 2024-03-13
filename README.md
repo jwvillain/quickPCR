@@ -50,10 +50,9 @@ processedData<-quickProcess(data_df = data,
 ```
 <details><summary>Expected output</summary>
 <p>
+Normalizer will show NA for delta CT (dCT) and 2^-dCT. Additionally, this tool will only support up to 3 technical replicates (CT1, CT2, CT3) for analysis. If fewer than three replicates are used, an "NA" value will be placed in that cell of the dataframe as shown below.
   
 ``` r
-Normalizer will show NA for delta CT (dCT) and 2^-dCT. Additionally, this tool will only support up to 3 technical replicates (CT1, CT2, CT3) for analysis. If fewer than three replicates are used, an "NA" value will be placed in that cell of the dataframe as shown below.
-
 head(processedData)
   Sample_Name Condition Target_Gene      CT1      CT2      CT3 Average_CT Standard_Deviation       dCT twoToNeg_dCT
 2         S10   Control        LGR5 34.50635 34.58119 34.78944   34.62566         0.14668779 11.123009 0.0004483741
