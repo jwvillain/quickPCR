@@ -9,6 +9,7 @@ devtools::install_github("jwvillain/quickPCR")
 ```
 
 ## Import data and perform initial data processing
+
 ``` r
 # Load libraries
 library(quickPCR)
