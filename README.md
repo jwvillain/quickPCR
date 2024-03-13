@@ -6,14 +6,14 @@ Collection of functions to expedite qPCR analysis.
 ``` r
 # install.packages("devtools") 
 devtools::install_github("jwvillain/quickPCR")
-
-# for README examples
-library(quickPCR)
-library(ggplot2)
 ```
 
 ## Import data and perform initial data processing
 ``` r
+# Load libraries
+library(quickPCR)
+library(ggplot2)
+
 #Import data:
 data<-read.table('qPCR data2.txt', na.strings = "",fill = TRUE,header = T)
 conditionKey<-read.csv('conditionKey2.csv')
