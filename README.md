@@ -663,6 +663,7 @@ col_fun(seq(-3, 3))
 
 
 #Create dataframe for pheatmap and populate it with Z-scores calculated by quickZScore()
+#In this case, columns should represent samples. Rows should represent genes. 
 heatmap_df<-data.frame(matrix(
   ncol = length(unique(ZScore_AU_Normalize$Sample_Name)), 
   nrow = length(unique(ZScore_AU_Normalize$Target_Gene))))
@@ -681,7 +682,7 @@ for(i in 1:ncol(heatmap_df)){
   }
 }
 
-#Create and format annotation file
+#Create and format annotation file. Rownames should be the sample names. Condition should be in the first (and only) column.
 annotation_df<-data.frame(ZScore_AU_Normalize$Sample_Name,ZScore_AU_Normalize$Condition)
 annotation_df<-distinct(annotation_df)
 rownames(annotation_df)<-annotation_df$ZScore_AU_Normalize.Sample_Name
@@ -730,7 +731,7 @@ while (!is.null(dev.list()))  dev.off()
 <p>
 
 <br>
-<img src="https://github.com/jwvillain/quickPCR/blob/main/Figures/ZScore_Heatmap.png" width="1300" height="325">
+<img src="https://github.com/jwvillain/quickPCR/blob/main/Figures/ZScore_Heatmap.png" width="975" height="243.75">
 
 </p>
 </details>
