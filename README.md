@@ -51,6 +51,8 @@ processedData<-quickProcess(data_df = data,
 <details><summary>Expected output</summary>
 <p>
 For the normalizer gene, an "NA" value will appear for delta CT (dCT) and 2^-dCT across all samples. Additionally, this tool will only support up to 3 technical replicates (CT1, CT2, CT3) for analysis. If fewer than three replicates are used, an "NA" value will be placed in that cell of the dataframe as shown below.
+
+Non-numeric values, which usually result from lowly expressed genes where the instrument labels those wells "undetermined," are replaced with a numeric value of 40. This replacement value can be adjusted by specifying "undetermined_num = X" when running quickProcess(). X is the numeric values you want to replace non-numeric values with (for example, can set to 50). 
   
 ``` r
 head(processedData)
@@ -92,7 +94,7 @@ head(RQV_noNormalize)
 </p>
 </details>
 
-Calculate p-values.
+Calculate p-values using RQVs.
 
 ``` r
 
@@ -117,6 +119,60 @@ Average RQV for the control condition should equal 1 for each gene.
 4    4 ng/mL Drug    Control        CDH1          1.4315459    0.51006291                  1     0.4228664    0.35238095
 5  0.5 ng/mL Drug    Control        LGR5          0.4901223    0.36141733                  1     1.0790082    0.73015873
 6  0.5 ng/mL Drug    Control       MKI67          0.7035484    0.25707187                  1     0.2597114    0.11111111
+
+```
+
+</p>
+</details>
+
+Calculate z-score values using RQVs
+
+``` r
+ZScore_RQV_noNormalize<-quickZScore(data_df = RQV_noNormalize,
+                          data_input_num = 11)
+```
+
+<details><summary>Expected output</summary>
+<p>
+
+``` r
+
+head(ZScore_RQV_noNormalize)
+   Sample_Name    Condition Target_Gene      CT1      CT2      CT3 Average_CT Standard_Deviation       dCT twoToNeg_dCT        RQV    Z.Score
+2          S10      Control        LGR5 34.50635 34.58119 34.78944   34.62566         0.14668779 11.123009 0.0004483741  0.3729184 -0.6160301
+7          S11      Control        LGR5 34.75470 35.09823 34.24502   34.69932         0.42929086 11.898335 0.0002619657  0.2178802 -0.6780490
+12         S12      Control        LGR5 33.43422 32.91566 33.26767   33.20585         0.26474682  9.951401 0.0010100198  0.8400462 -0.4291682
+17         S13 4 ng/mL Drug        LGR5 29.03057 29.07294 29.10276   29.06876         0.03627536  6.349655 0.0122620626 10.1985120  3.3144346
+21         S14 4 ng/mL Drug        LGR5 30.24761 30.57711 30.56170   30.46214         0.18594941  7.995673 0.0039179838  3.2586365  0.5383239
+26         S15 4 ng/mL Drug        LGR5 32.18607 31.83747 32.03858   32.02070         0.17498527  9.590382 0.0012972016  1.0788989 -0.3336216
+
+```
+
+</p>
+</details>
+
+Generate plot of the RQV values to get a quick view of the data.
+
+``` r
+qPCR_plot<-quickPlot(data_df = subset(RQV_noNormalize, RQV_noNormalize[,3] == "LGR5"),
+          input_num = 11,
+          control_char = "Control")
+
+ggsave("RQV_noNormalize.pdf",
+       plot = qPCR_plot,
+       units = 'in',
+       width = 8,
+       height = 8)
+
+```
+
+<details><summary>Expected output</summary>
+<p>
+Red dotted line marks the average of the specified control condition.
+
+``` r
+
+
 
 ```
 
