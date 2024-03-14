@@ -650,3 +650,87 @@ ggsave("AU_Normalize_custom2.png",
 </p>
 </details>
 <br>
+
+Create a heatmap using Z-score values
+``` r
+library(ComplexHeatmap)
+library(circlize)
+library(dplyr)
+
+#establish color palette for heatmap
+col_fun = colorRamp2(c(-3,-1.5, 0, 1.5,3), c("purple","blue", "white","orange", "red")) numeric values based off of min, max values of Z-scores
+col_fun(seq(-3, 3))
+
+
+#Create dataframe for pheatmap and populate it with Z-scores calculated by quickZScore()
+heatmap_df<-data.frame(matrix(
+  ncol = length(unique(ZScore_AU_Normalize$Sample_Name)), 
+  nrow = length(unique(ZScore_AU_Normalize$Target_Gene))))
+
+rownames(heatmap_df)<-unique(ZScore_AU_Normalize$Target_Gene)
+colnames(heatmap_df)<-unique(ZScore_AU_Normalize$Sample_Name)
+
+for(i in 1:ncol(heatmap_df)){
+  temp<-subset(ZScore_AU_Normalize,
+               ZScore_AU_Normalize$Sample_Name == colnames(heatmap_df)[i])
+  
+  for(j in 1:nrow(heatmap_df)){
+    temp2<-subset(temp,
+                 temp$Target_Gene == rownames(heatmap_df)[j])
+    heatmap_df[j,i]<-temp2[1,13]
+  }
+}
+
+#Create and format annotation file
+annotation_df<-data.frame(ZScore_AU_Normalize$Sample_Name,ZScore_AU_Normalize$Condition)
+annotation_df<-distinct(annotation_df)
+rownames(annotation_df)<-annotation_df$ZScore_AU_Normalize.Sample_Name
+annotation_df<-subset(annotation_df, select = -ZScore_AU_Normalize.Sample_Name)
+colnames(annotation_df)<-"Condition"
+
+#Set colors for annotation
+colours <- list('Condition' = c('Control' = 'lightgray', 
+                                '4 ng/mL Drug' = 'purple',
+                                '0.5 ng/mL Drug' = "lightblue",
+                                '1 ng/mL Drug' = "blue",
+                                '2 ng/mL Drug' = "darkblue"))
+
+colAnn <- HeatmapAnnotation(df = annotation_df,
+                            which = 'col',
+                            col = colours,
+                            annotation_width = unit(c(1, 4), 'cm'),
+                            gap = unit(1, 'mm'))
+
+#Generate and export heatmap
+png("ZScore_Heatmap.png",width=13,height=3.25,units="in",res=1200)
+
+Heatmap(
+  data.matrix(heatmap_df),
+  name = "Z-Score",
+  col = col_fun, 
+  show_row_names = TRUE,
+  show_column_names = TRUE,
+  cluster_rows = TRUE,
+  cluster_columns = TRUE,
+  show_column_dend = TRUE,
+  show_row_dend = TRUE,
+  row_dend_reorder = TRUE,
+  column_dend_reorder = TRUE,
+  clustering_method_rows = "ward.D2",
+  clustering_method_columns = "ward.D2",
+  width = unit(250, "mm"),
+  height = unit(50, "mm"),
+  top_annotation=colAnn
+  )
+
+while (!is.null(dev.list()))  dev.off()
+```
+
+<details><summary>Expected output</summary>
+<p>
+
+<br>
+<img src="https://github.com/jwvillain/quickPCR/blob/main/Figures/ZScore_Heatmap.png" width="1300" height="325">
+
+</p>
+</details>
