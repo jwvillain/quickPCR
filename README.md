@@ -163,7 +163,7 @@ head(ZScore_RQV_noNormalize)
 </details>
 <br>
 
-Generate plot of the RQV values to get a quick view of the data.
+Generate plot of the RQV values to get a quick view of the data. Use "?quickPlot" to see more information on how to customize plots.
 
 ``` r
 qPCR_plot<-quickPlot(data_df = subset(RQV_noNormalize, RQV_noNormalize[,3] == "LGR5"),
@@ -189,9 +189,30 @@ Need to subset to specify one gene to plot. Red dotted line marks the average of
 
 ## Example 2: Go directly into calculating arbitrary values (AUs)
 
-``` r
+Calculate AUs
 
+``` r
+AU_noNormalize<-quickAU(data_df = processedData,
+                          AU_input_num = 10) #Numeric specifying the column with the 2^-dCT values
 ```
+
+<details><summary>Expected output</summary>
+<p>
+  
+``` r
+head(AU_noNormalize)
+  Sample_Name Condition Target_Gene      CT1      CT2      CT3 Average_CT Standard_Deviation       dCT twoToNeg_dCT          AU
+2         S10   Control        LGR5 34.50635 34.58119 34.78944   34.62566         0.14668779 11.123009 0.0004483741   0.4483741
+3         S10   Control       MKI67 26.74216 26.89423 26.73264   26.78967         0.09066912  3.287024 0.1024488589 102.4488589
+4         S10   Control       OLFM4 27.40610 27.65227 27.60735   27.55524         0.13109659  4.052591 0.0602626812  60.2626812
+5         S10   Control        CDH1 25.07976 24.87838       NA   24.97907         0.14239835  1.476416 0.3593804231 359.3804231
+1         S10   Control        RPS9 23.47855 23.50337 23.52603   23.50265         0.02374695        NA           NA          NA
+7         S11   Control        LGR5 34.75470 35.09823 34.24502   34.69932         0.42929086 11.898335 0.0002619657   0.2619657
+```
+
+</p>
+</details>
+<br>
 
 ## Example 3: Normalize to a specified gene and then calculate RQVs
 
