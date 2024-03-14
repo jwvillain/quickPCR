@@ -181,7 +181,7 @@ ggsave("RQV_noNormalize.pdf",
 
 <details><summary>Expected output</summary>
 <p>
-Red dotted line marks the average of the specified control condition.
+Need to subset to specify one gene to plot. Red dotted line marks the average of the specified control condition.
 <br>
 <img src="https://github.com/jwvillain/quickPCR/blob/main/Figures/RQV_noNormalize.png" width="400" height="400">
 
