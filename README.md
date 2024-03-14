@@ -612,9 +612,40 @@ ggsave("AU_Normalize_custom.png",
 
 <details><summary>Expected output</summary>
 <p>
-Need to subset to specify one gene to plot. Red dotted line marks the average of the specified control condition.
+
 <br>
 <img src="https://github.com/jwvillain/quickPCR/blob/main/Figures/AU_Normalize_custom.png" width="400" height="400">
+
+</p>
+</details>
+<br>
+
+Customize your plot using commands/tools compatible with ggplot2
+``` r
+library(ggsignif)
+qPCR_plot4_custom2<-qPCR_plot4+
+  scale_fill_manual(values = c("#8B92D2","#C3EDD9","#E01542","#95F5FF","#EB6B50"))+
+  geom_signif(comparisons = list(c('Control','4 ng/mL Drug'),
+                                 c('Control','0.5 ng/mL Drug'),
+                                 c('Control','1 ng/mL Drug'),
+                                 c('Control','2 ng/mL Drug')),
+              step_increase = 0.18,
+              test = "wilcox.test",
+              textsize=6)+
+  ylim(0,34)
+
+ggsave("AU_Normalize_custom2.png",
+       plot = qPCR_plot4_custom2,
+       units = 'in',
+       width = 8,
+       height = 8)
+```
+
+<details><summary>Expected output</summary>
+<p>
+
+<br>
+<img src="https://github.com/jwvillain/quickPCR/blob/main/Figures/AU_Normalize_custom2.png" width="400" height="400">
 
 </p>
 </details>
