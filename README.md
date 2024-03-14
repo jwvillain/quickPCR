@@ -122,7 +122,7 @@ Reminder that your control condition used to calculate RQVs will have an average
 ``` r
 
 head(signif)
-         Condition1 Condition2 Gene_Target Average_Condition1 SD_Condition1 Average_Condition2 SD_Condition2 wilcox_pvalue
+        Condition1 Condition2 Gene_Target Average_Condition1 SD_Condition1 Average_Condition2 SD_Condition2 wilcox_pvalue
 1    4 ng/mL Drug    Control        LGR5          5.0780174    3.40115028                  1     1.0790082    0.01904762
 2    4 ng/mL Drug    Control       MKI67          0.7719667    0.47690271                  1     0.2597114    0.25714286
 3    4 ng/mL Drug    Control       OLFM4          0.7404012    0.50978977                  1     0.7748819    0.60952381
@@ -187,7 +187,7 @@ Need to subset to specify one gene to plot. Red dotted line marks the average of
 </p>
 </details>
 
-## Example 2: Go directly into calculating arbitrary values (AUs)
+## Example 2: Go directly into calculating arbitrary units (AUs)
 
 Calculate AUs
 
@@ -213,6 +213,82 @@ head(AU_noNormalize)
 </p>
 </details>
 <br>
+
+Calculate p-values using AUs.
+
+``` r
+signif<-quickSignif(data_df = AU_noNormalize,
+            reference_condition_char = "Control", #Character specifying the condition you want to compare to
+            test_char = "wilcox", #Character specifying statistical test (wilcox or ttest)
+            data_input_num = 11) #Numeric specifying the column with data you want to use to calculate significance
+```
+
+<details><summary>Expected output</summary>
+<p>
+
+``` r
+head(signif)
+        Condition1 Condition2 Gene_Target Average_Condition1 SD_Condition1 Average_Condition2 SD_Condition2 wilcox_pvalue
+1    4 ng/mL Drug    Control        LGR5          6.1054954     4.0893336           1.202338      1.297333    0.01904762
+2    4 ng/mL Drug    Control       OLFM4        101.9072854    70.1664114         137.637934    106.653147    0.60952381
+3    4 ng/mL Drug    Control       MKI67        119.4120278    73.7699168         154.685463     40.173571    0.25714286
+4    4 ng/mL Drug    Control        CDH1        734.9598500   261.8677806         513.402909    217.100838    0.35238095
+5  0.5 ng/mL Drug    Control        LGR5          0.5892929     0.4345459           1.202338      1.297333    0.73015873
+6  0.5 ng/mL Drug    Control       MKI67        108.8287045    39.7652814         154.685463     40.173571    0.11111111
+
+```
+
+Calculate z-score values using RQVs
+
+``` r
+ZScore_AU_noNormalize<-quickZScore(data_df = AU_noNormalize,
+                                    data_input_num = 11) #Numeric specifying the column with data you want to use to calculate Z-score values
+```
+
+<details><summary>Expected output</summary>
+<p>
+
+``` r
+
+head(ZScore_AU_noNormalize)
+   Sample_Name    Condition Target_Gene      CT1      CT2      CT3 Average_CT Standard_Deviation       dCT twoToNeg_dCT         AU    Z.Score
+2          S10      Control        LGR5 34.50635 34.58119 34.78944   34.62566         0.14668779 11.123009 0.0004483741  0.4483741 -0.6160301
+7          S11      Control        LGR5 34.75470 35.09823 34.24502   34.69932         0.42929086 11.898335 0.0002619657  0.2619657 -0.6780490
+12         S12      Control        LGR5 33.43422 32.91566 33.26767   33.20585         0.26474682  9.951401 0.0010100198  1.0100198 -0.4291682
+17         S13 4 ng/mL Drug        LGR5 29.03057 29.07294 29.10276   29.06876         0.03627536  6.349655 0.0122620626 12.2620626  3.3144346
+21         S14 4 ng/mL Drug        LGR5 30.24761 30.57711 30.56170   30.46214         0.18594941  7.995673 0.0039179838  3.9179838  0.5383239
+26         S15 4 ng/mL Drug        LGR5 32.18607 31.83747 32.03858   32.02070         0.17498527  9.590382 0.0012972016  1.2972016 -0.3336216
+> 
+
+```
+
+</p>
+</details>
+<br>
+
+Generate plot of the RQV values to get a quick view of the data. Use "?quickPlot" to see more information on how to customize plots.
+
+``` r
+qPCR_plot2<-quickPlot(data_df = subset(ZScore_AU_noNormalize, ZScore_AU_noNormalize[,3] == "LGR5"),
+                     input_num = 11, #Numeric specifying the column with data you want to use to generate your plot
+                     control_char = "Control") #Character specifying the control condition
+
+ggsave("AU_noNormalize.pdf",
+       plot = qPCR_plot2,
+       units = 'in',
+       width = 8,
+       height = 8)
+
+```
+
+<details><summary>Expected output</summary>
+<p>
+Need to subset to specify one gene to plot. Red dotted line marks the average of the specified control condition.
+<br>
+<img src="https://github.com/jwvillain/quickPCR/blob/main/Figures/AU_noNormalize.png" width="400" height="400">
+
+</p>
+</details>
 
 ## Example 3: Normalize to a specified gene and then calculate RQVs
 
