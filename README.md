@@ -662,7 +662,7 @@ col_fun = colorRamp2(c(-3,-1.5, 0, 1.5,3), c("purple","blue", "white","orange", 
 col_fun(seq(-3, 3))
 
 
-#Create dataframe for pheatmap and populate it with Z-scores calculated by quickZScore()
+#Create dataframe for heatmap and populate it with Z-scores calculated by quickZScore()
 #In this case, columns should represent samples. Rows should represent genes. 
 heatmap_df<-data.frame(matrix(
   ncol = length(unique(ZScore_AU_Normalize$Sample_Name)), 
