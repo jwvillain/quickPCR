@@ -65,23 +65,46 @@ head(processedData)
 </p>
 </details>
 
-## Example 1: Process data and then go directly into calculating relative quantitative values (RQVs)
-Format your data and calculate 2^-deltaCT values for downstream analyses.
+## Example 1: Go directly into calculating relative quantitative values (RQVs)
+
+``` r
+RQV_noNormalize<-quickRQV(data_df = processedData,
+               control_char = "Control", #Character specifying the control condition
+               RQV_input_num = 10) #Numeric specifying the column with the 2^-dCT values
+```
+
+<details><summary>Expected output</summary>
+<p>
+Average for the control condition should equal 1 for each gene.
+  
+``` r
+head(RQV_noNormalize)
+  Sample_Name Condition Target_Gene      CT1      CT2      CT3 Average_CT Standard_Deviation       dCT twoToNeg_dCT       RQV
+2         S10   Control        LGR5 34.50635 34.58119 34.78944   34.62566         0.14668779 11.123009 0.0004483741 0.3729184
+3         S10   Control       MKI67 26.74216 26.89423 26.73264   26.78967         0.09066912  3.287024 0.1024488589 0.6623044
+4         S10   Control       OLFM4 27.40610 27.65227 27.60735   27.55524         0.13109659  4.052591 0.0602626812 0.4378348
+5         S10   Control        CDH1 25.07976 24.87838       NA   24.97907         0.14239835  1.476416 0.3593804231 0.6999969
+1         S10   Control        RPS9 23.47855 23.50337 23.52603   23.50265         0.02374695        NA           NA        NA
+7         S11   Control        LGR5 34.75470 35.09823 34.24502   34.69932         0.42929086 11.898335 0.0002619657 0.2178802
+```
+</p>
+</details>
+
+## Example 2: Go directly into calculating arbitrary values (AUs)
+
 ``` r
 
 ```
-## Example 2: Process data and then go directly into calculating arbitrary values (AUs)
-Format your data and calculate 2^-deltaCT values for downstream analyses.
+
+## Example 3: Normalize to a specified gene and then calculate RQVs
+
 ``` r
 
 ```
-## Example 3: Process data, normalize to a specified gene and then calculate RQVs
-Format your data and calculate 2^-deltaCT values for downstream analyses.
+
+## Example 4: Normalize to a specified gene and then calculate AUs
+
 ``` r
 
 ```
-## Example 4: Process data, normalize to a specified gene and then calculate AUs
-Format your data and calculate 2^-deltaCT values for downstream analyses.
-``` r
 
-```
