@@ -106,7 +106,7 @@ head(RQV_noNormalize)
 <br>
 
 Calculate p-values using RQVs.
-
+Average RQV for the control condition should equal 1 for each gene.
 ``` r
 
 signif<-quickSignif(data_df = RQV_noNormalize,
@@ -122,7 +122,6 @@ Reminder that your control condition used to calculate RQVs will have an average
 ``` r
 
 head(signif)
-Average RQV for the control condition should equal 1 for each gene.
          Condition1 Condition2 Gene_Target Average_Condition1 SD_Condition1 Average_Condition2 SD_Condition2 wilcox_pvalue
 1    4 ng/mL Drug    Control        LGR5          5.0780174    3.40115028                  1     1.0790082    0.01904762
 2    4 ng/mL Drug    Control       MKI67          0.7719667    0.47690271                  1     0.2597114    0.25714286
