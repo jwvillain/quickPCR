@@ -93,7 +93,7 @@ head(RQV_noNormalize)
 
 </p>
 </details>
-
+<br>
 
 Calculate p-values using RQVs.
 
@@ -125,7 +125,7 @@ Average RQV for the control condition should equal 1 for each gene.
 
 </p>
 </details>
-
+<br>
 
 Calculate z-score values using RQVs
 
@@ -152,7 +152,7 @@ head(ZScore_RQV_noNormalize)
 
 </p>
 </details>
-
+<br>
 
 Generate plot of the RQV values to get a quick view of the data.
 
@@ -172,9 +172,8 @@ ggsave("RQV_noNormalize.pdf",
 <details><summary>Expected output</summary>
 <p>
 Red dotted line marks the average of the specified control condition.
-
+<br>
 <img src="https://github.com/jwvillain/quickPCR/blob/main/Figures/RQV_noNormalize.png" width="400" height="400">
-
 
 </p>
 </details>
