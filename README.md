@@ -78,7 +78,6 @@ head(processedData)
 </p>
 </details>
 <br>
-<br>
 
 ## Example 1: Go directly into calculating relative quantitative values (RQVs)
 Calculate RQVs
@@ -190,7 +189,6 @@ Need to subset to specify one gene to plot. Red dotted line marks the average of
 </p>
 </details>
 <br>
-<br>
 
 ## Example 2: Go directly into calculating arbitrary units (AUs)
 
@@ -298,12 +296,12 @@ Need to subset to specify one gene to plot. Red dotted line marks the average of
 </p>
 </details>
 <br>
-<br>
 
 ## Example 3: Normalize to a specified gene and then calculate RQVs
 For certain datasets, you may need to normalize your 2^-dCT values to another gene. If you are looking at changes in a cell population within a heterogenous tissue (like primary intestinal tissue), you may need to normalize to a another gene from your qPCR data. For example, if looking at changes in LGR5 stem cells from the epithelium, you may want to normalize 2^-dCT values to an epithelial marker (CDH1).
 <br>
 <br>
+
 Normalize your 2^-dCT values to another gene from your qPCR data.
 
 ``` r
@@ -450,5 +448,5 @@ Need to subset to specify one gene to plot. Red dotted line marks the average of
 ```
 
 <br>
-<br>
+
 ## Misc
