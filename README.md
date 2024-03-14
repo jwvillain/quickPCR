@@ -583,7 +583,39 @@ Need to subset to specify one gene to plot. Red dotted line marks the average of
 Customize your plots using quickPlot()
 ``` r
 qPCR_plot4_custom<-quickPlot(data_df = subset(AU_Normalize, AU_Normalize[,3] == "LGR5"),
-                     input_num = 12, #Numeric specifying the column with data you want to use to generate your plot
-                     control_char = "Control") #Character specifying the control condition
+                      input_num = 12,
+                      control_char = "Control",
+                      conditionOrder_vec = c("Control","0.5 ng/mL Drug","1 ng/mL Drug","2 ng/mL Drug","4 ng/mL Drug"), #character vector specifying the order in which you want your conditions to appear along the x-axis
+                      ymin_num = 0, #Numeric value specifying the minimum you want along the y-axis
+                      ymax_num = 25, #Numeric value specifying the maximium you want along the y-axis
+                      dotSize_num = 4, #Numeric used to determine the dot size
+                      xTitle_char = "Treatment", #Character value with label for your x-axis.
+                      yTitle_char = "LGR5 (AU)", #Character value with label for your y-axis.
+                      axisTextSize_num = 26, #Numeric value to specify the text size of the axes values. 
+                      axisTitleSize_num = 30, #Numeric value to specify the text size of the axes titles.
+                      legendPosition_char = "right", #Character value specifying the legend position. Default set to "none."
+                      legendTextSize_num = 15, #Numeric value to specify the text size of the legend text.
+                      legendTitleSize_num = 18, #Numeric value to specify the text size of the legend title.
+                      legendTitle_char = "Color Key", #Character value with label for your legend.
+                      jitter_num = 0.25, #Numeric value specifying the horizontal jitter or horizontal range datapoints can appear within a given condition.
+                      legendSize_num = 1, #Numeric value specifying the size of the icons in the legend.
+                      extraMargin_num = 1.5 #Numeric value specifying the extra margin space you want in your plot (in cm).
+                      )
+
+ggsave("AU_Normalize_custom.png",
+       plot = qPCR_plot4_custom,
+       units = 'in',
+       width = 8,
+       height = 8)
 
 ```
+
+<details><summary>Expected output</summary>
+<p>
+Need to subset to specify one gene to plot. Red dotted line marks the average of the specified control condition.
+<br>
+<img src="https://github.com/jwvillain/quickPCR/blob/main/Figures/AU_Normalize_custom.png" width="400" height="400">
+
+</p>
+</details>
+<br>
