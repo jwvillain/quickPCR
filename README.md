@@ -237,8 +237,11 @@ head(signif)
 6  0.5 ng/mL Drug    Control       MKI67        108.8287045    39.7652814         154.685463     40.173571    0.11111111
 
 ```
+</p>
+</details>
+<br>
 
-Calculate z-score values using RQVs
+Calculate z-score values using AUs
 
 ``` r
 ZScore_AU_noNormalize<-quickZScore(data_df = AU_noNormalize,
@@ -266,7 +269,7 @@ head(ZScore_AU_noNormalize)
 </details>
 <br>
 
-Generate plot of the RQV values to get a quick view of the data. Use "?quickPlot" to see more information on how to customize plots.
+Generate plot of the AU values to get a quick view of the data. Use "?quickPlot" to see more information on how to customize plots.
 
 ``` r
 qPCR_plot2<-quickPlot(data_df = subset(ZScore_AU_noNormalize, ZScore_AU_noNormalize[,3] == "LGR5"),
