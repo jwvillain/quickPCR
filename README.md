@@ -129,7 +129,7 @@ Calculate z-score values using RQVs
 
 ``` r
 ZScore_RQV_noNormalize<-quickZScore(data_df = RQV_noNormalize,
-                          data_input_num = 11)
+                          data_input_num = 11) #Numeric with the values you are using to calculate Z-scores
 ```
 
 <details><summary>Expected output</summary>
@@ -155,8 +155,8 @@ Generate plot of the RQV values to get a quick view of the data.
 
 ``` r
 qPCR_plot<-quickPlot(data_df = subset(RQV_noNormalize, RQV_noNormalize[,3] == "LGR5"),
-          input_num = 11,
-          control_char = "Control")
+          input_num = 11, #Numeric with the values you are wanting to graph
+          control_char = "Control") #Character specifying the control condition
 
 ggsave("RQV_noNormalize.pdf",
        plot = qPCR_plot,
@@ -171,8 +171,7 @@ ggsave("RQV_noNormalize.pdf",
 Red dotted line marks the average of the specified control condition.
 
 ``` r
-
-
+<img src="https://github.com/jwvillain/quickPCR/blob/main/Figures/RQV_noNormalize.png" width="400" height="400">
 
 ```
 
