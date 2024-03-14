@@ -1,5 +1,7 @@
 # quickPCR
 Collection of functions to expedite qPCR analysis.
+<br>
+<img src="https://github.com/jwvillain/quickPCR/blob/main/Figures/github figure.png" width="400" height="400">
 
 ## Installation
 
