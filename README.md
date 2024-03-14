@@ -580,3 +580,10 @@ Need to subset to specify one gene to plot. Red dotted line marks the average of
 <br>
 
 ## Misc
+Customize your plots using quickPlot()
+``` r
+qPCR_plot4_custom<-quickPlot(data_df = subset(AU_Normalize, AU_Normalize[,3] == "LGR5"),
+                     input_num = 12, #Numeric specifying the column with data you want to use to generate your plot
+                     control_char = "Control") #Character specifying the control condition
+
+```
