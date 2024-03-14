@@ -190,7 +190,7 @@ Need to subset to specify one gene to plot. Red dotted line marks the average of
 
 ## Example 2: Go directly into calculating arbitrary units (AUs)
 
-Calculate AUs
+Calculate AUs by multiplying 2^-dCT by 1000.
 
 ``` r
 AU_noNormalize<-quickAU(data_df = processedData,
@@ -295,10 +295,145 @@ Need to subset to specify one gene to plot. Red dotted line marks the average of
 </details>
 
 ## Example 3: Normalize to a specified gene and then calculate RQVs
+For certain datasets, you may need to normalize your 2^-dCT values to another gene. If you are looking at changes in a cell population within a heterogenous tissue (like primary intestinal tissue), you may need to normalize to a another gene from your qPCR data. For example, if looking at changes in LGR5 stem cells from the epithelium, you may want to normalize 2^-dCT values to an epithelial marker (CDH1).
+<br>
+<br>
+Normalize your 2^-dCT values to another gene from your qPCR data.
 
 ``` r
+normalized<-quickNormalize(data_df = processedData,
+                           normalizer2_char = "CDH1", #character value specifying which gene you want to normalize your 2^-dCT values to
+                           twoToNeg_dCT_num = 10) #Numeric specifying the column with the data you want to process
+```
+
+<details><summary>Expected output</summary>
+<p>
+
+``` r
+head(normalized)
+  Sample_Name Condition Target_Gene      CT1      CT2      CT3 Average_CT Standard_Deviation       dCT twoToNeg_dCT CDH1_Normalized
+2         S10   Control        LGR5 34.50635 34.58119 34.78944   34.62566         0.14668779 11.123009 0.0004483741    0.0012476309
+3         S10   Control       MKI67 26.74216 26.89423 26.73264   26.78967         0.09066912  3.287024 0.1024488589    0.2850707837
+4         S10   Control       OLFM4 27.40610 27.65227 27.60735   27.55524         0.13109659  4.052591 0.0602626812    0.1676849304
+5         S10   Control        CDH1 25.07976 24.87838       NA   24.97907         0.14239835  1.476416 0.3593804231    1.0000000000
+1         S10   Control        RPS9 23.47855 23.50337 23.52603   23.50265         0.02374695        NA           NA              NA
+7         S11   Control        LGR5 34.75470 35.09823 34.24502   34.69932         0.42929086 11.898335 0.0002619657    0.0008374836
 
 ```
+
+</p>
+</details>
+<br>
+
+Calculate RQVs
+
+``` r
+RQV_Normalize<-quickRQV(data_df = normalized,
+               control_char = "Citric Acid Control",
+               RQV_input_num = 11)
+```
+
+<details><summary>Expected output</summary>
+<p>
+<br>
+  
+Average RQV for the control condition should equal 1 for each gene. For the gene you normalized to in the previous step (in this case CDH1), the normalized values will be 1 across all your samples. 
+  
+``` r
+head(RQV_Normalize)
+  Sample_Name Condition Target_Gene      CT1      CT2      CT3 Average_CT Standard_Deviation       dCT twoToNeg_dCT CDH1_Normalized       RQV
+2         S10   Control        LGR5 34.50635 34.58119 34.78944   34.62566         0.14668779 11.123009 0.0004483741    0.0012476309 0.6452716
+3         S10   Control       MKI67 26.74216 26.89423 26.73264   26.78967         0.09066912  3.287024 0.1024488589    0.2850707837 0.8673992
+4         S10   Control       OLFM4 27.40610 27.65227 27.60735   27.55524         0.13109659  4.052591 0.0602626812    0.1676849304 0.6668514
+5         S10   Control        CDH1 25.07976 24.87838       NA   24.97907         0.14239835  1.476416 0.3593804231    1.0000000000 1.0000000
+1         S10   Control        RPS9 23.47855 23.50337 23.52603   23.50265         0.02374695        NA           NA              NA        NA
+7         S11   Control        LGR5 34.75470 35.09823 34.24502   34.69932         0.42929086 11.898335 0.0002619657    0.0008374836 0.4331445
+```
+
+</p>
+</details>
+<br>
+
+Calculate p-values using the gene normalized RQVs.
+
+``` r
+signif<-quickSignif(data_df = RQV_Normalize,
+            reference_condition_char = "Control", #Character specifying the condition you want to compare to
+            test_char = "wilcox", #Character specifying statistical test (wilcox or ttest)
+            data_input_num = 12 #Numeric specifying the column with data you want to use to calculate significance
+```
+
+<details><summary>Expected output</summary>
+<p>
+
+When running this step after quickNormalize(), quickSignif() will automatically identify which gene you normalized to and remove it from the output. 
+
+``` r
+head(signif)
+       Condition1 Condition2 Gene_Target Average_Condition1 SD_Condition1 Average_Condition2 SD_Condition2 wilcox_pvalue
+1    4 ng/mL Drug    Control        LGR5          5.3606959     4.3643295                  1     0.7272935    0.06666667
+2    4 ng/mL Drug    Control       MKI67          0.5920915     0.4730187                  1     0.3823081    0.06666667
+3    4 ng/mL Drug    Control       OLFM4          0.6421271     0.4567213                  1     0.3962562    0.35238095
+4  0.5 ng/mL Drug    Control        LGR5          0.7813548     0.6553367                  1     0.7272935    0.55555556
+5  0.5 ng/mL Drug    Control       MKI67          0.8176996     0.3555748                  1     0.3823081    0.73015873
+6  0.5 ng/mL Drug    Control       OLFM4          1.2395298     0.6083415                  1     0.3962562    0.55555556
+
+```
+</p>
+</details>
+<br>
+
+Calculate z-score values using the RQVs from the normalize 2^-dCT values.
+
+``` r
+ZScore_RQV_Normalize<-quickZScore(data_df = RQV_Normalize,
+                                    data_input_num = 12) #Numeric specifying the column with data you want to use to calculate Z-score values
+```
+
+<details><summary>Expected output</summary>
+<p>
+
+When running this step after quickNormalize(), quickZScore() will automatically identify which gene you normalized to and remove it from the output.
+
+``` r
+head(ZScore_RQV_Normalize)
+   Sample_Name    Condition Target_Gene      CT1      CT2      CT3 Average_CT Standard_Deviation       dCT twoToNeg_dCT CDH1_Normalized        RQV    Z.Score
+2          S10      Control        LGR5 34.50635 34.58119 34.78944   34.62566         0.14668779 11.123009 0.0004483741    0.0012476309  0.6452716 -0.5918466
+7          S11      Control        LGR5 34.75470 35.09823 34.24502   34.69932         0.42929086 11.898335 0.0002619657    0.0008374836  0.4331445 -0.6639490
+12         S12      Control        LGR5 33.43422 32.91566 33.26767   33.20585         0.26474682  9.951401 0.0010100198    0.0016683323  0.8628574 -0.5178888
+17         S13 4 ng/mL Drug        LGR5 29.03057 29.07294 29.10276   29.06876         0.03627536  6.349655 0.0122620626    0.0205502522 10.6285396  2.8014840
+21         S14 4 ng/mL Drug        LGR5 30.24761 30.57711 30.56170   30.46214         0.18594941  7.995673 0.0039179838    0.0034887935  1.8043954 -0.1978583
+26         S15 4 ng/mL Drug        LGR5 32.18607 31.83747 32.03858   32.02070         0.17498527  9.590382 0.0012972016    0.0013215090  0.6834812 -0.5788591
+
+```
+
+</p>
+</details>
+<br>
+
+Generate plot of the gene normalized RQV values to get a quick view of the data. Use "?quickPlot" to see more information on how to customize plots.
+
+``` r
+qPCR_plot3<-quickPlot(data_df = subset(RQV_Normalize, RQV_Normalize[,3] == "LGR5"),
+                     input_num = 12, #Numeric specifying the column with data you want to use to generate your plot
+                     control_char = "Control") #Character specifying the control condition
+
+ggsave("RQV_Normalize.png",
+       plot = qPCR_plot3,
+       units = 'in',
+       width = 8,
+       height = 8)
+
+```
+
+<details><summary>Expected output</summary>
+<p>
+Need to subset to specify one gene to plot. Red dotted line marks the average of the specified control condition.
+<br>
+<img src="https://github.com/jwvillain/quickPCR/blob/main/Figures/RQV_Normalize.png" width="400" height="400">
+
+</p>
+</details>
 
 ## Example 4: Normalize to a specified gene and then calculate AUs
 
@@ -306,3 +441,4 @@ Need to subset to specify one gene to plot. Red dotted line marks the average of
 
 ```
 
+## Misc
