@@ -66,6 +66,7 @@ head(processedData)
 </details>
 
 ## Example 1: Go directly into calculating relative quantitative values (RQVs)
+Calculate RQVs
 
 ``` r
 RQV_noNormalize<-quickRQV(data_df = processedData,
@@ -75,7 +76,7 @@ RQV_noNormalize<-quickRQV(data_df = processedData,
 
 <details><summary>Expected output</summary>
 <p>
-Average for the control condition should equal 1 for each gene.
+Average RQV for the control condition should equal 1 for each gene.
   
 ``` r
 head(RQV_noNormalize)
@@ -87,6 +88,38 @@ head(RQV_noNormalize)
 1         S10   Control        RPS9 23.47855 23.50337 23.52603   23.50265         0.02374695        NA           NA        NA
 7         S11   Control        LGR5 34.75470 35.09823 34.24502   34.69932         0.42929086 11.898335 0.0002619657 0.2178802
 ```
+
+</p>
+</details>
+
+Calculate p-values.
+
+``` r
+
+signif<-quickSignif(data_df = RQV_noNormalize,
+            reference_condition_char = "Control", #Character specifying the condition you want to compare to
+            test_char = "wilcox", #Character specifying statistical test (wilcox or ttest)
+            data_input_num = 11) #Numeric with the values you are using to calculate p-values
+```
+
+<details><summary>Expected output</summary>
+<p>
+Reminder that your control condition used to calculate RQVs will have an average value of 1.
+
+``` r
+
+head(signif)
+Average RQV for the control condition should equal 1 for each gene.
+         Condition1 Condition2 Gene_Target Average_Condition1 SD_Condition1 Average_Condition2 SD_Condition2 wilcox_pvalue
+1    4 ng/mL Drug    Control        LGR5          5.0780174    3.40115028                  1     1.0790082    0.01904762
+2    4 ng/mL Drug    Control       MKI67          0.7719667    0.47690271                  1     0.2597114    0.25714286
+3    4 ng/mL Drug    Control       OLFM4          0.7404012    0.50978977                  1     0.7748819    0.60952381
+4    4 ng/mL Drug    Control        CDH1          1.4315459    0.51006291                  1     0.4228664    0.35238095
+5  0.5 ng/mL Drug    Control        LGR5          0.4901223    0.36141733                  1     1.0790082    0.73015873
+6  0.5 ng/mL Drug    Control       MKI67          0.7035484    0.25707187                  1     0.2597114    0.11111111
+
+```
+
 </p>
 </details>
 
