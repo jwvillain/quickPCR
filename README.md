@@ -21,6 +21,18 @@ library(ggplot2)
 data<-read.table('qPCR data2.txt', na.strings = "",fill = TRUE,header = T)
 conditionKey<-read.csv('conditionKey2.csv')
 
+#Initial data processing
+processedData<-quickProcess(data_df = data,
+                             normalizer_char = "RPS9", #name of your normalizer
+                             sampleName_num = 2, #column number with your sample name information in data_df
+                             targetGene_num = 3, #column number with your target gene name information in data_df
+                             CT_num = 7, #column number with your CT information in data_df
+                             conditionKey_df = conditionKey)
+```
+<details><summary>Input data</summary>
+<p>
+  
+``` r
 #view data:
 #Note: imported data can be formated in different ways. Minimium for the imported data is three columns defining the 1) sample names 2) gene names 3) CT values.
 head(data)
@@ -41,15 +53,11 @@ head(conditionKey)
 4         S35 0.5 ng/mL Drug
 5         S36 0.5 ng/mL Drug
 6         S37   1 ng/mL Drug
-
-#Initial data processing
-processedData<-quickProcess(data_df = data,
-                             normalizer_char = "RPS9", #name of your normalizer
-                             sampleName_num = 2, #column number with your sample name information in data_df
-                             targetGene_num = 3, #column number with your target gene name information in data_df
-                             CT_num = 7, #column number with your CT information in data_df
-                             conditionKey_df = conditionKey)
 ```
+
+</p>
+</details>
+
 <details><summary>Expected output</summary>
 <p>
 For the normalizer gene, an "NA" value will appear for delta CT (dCT) and 2^-dCT across all samples. Additionally, this tool will only support up to 3 technical replicates (CT1, CT2, CT3) for analysis. If fewer than three replicates are used, an "NA" value will be placed in that cell of the dataframe as shown below.
