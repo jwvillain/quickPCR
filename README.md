@@ -735,3 +735,61 @@ while (!is.null(dev.list()))  dev.off()
 
 </p>
 </details>
+
+Create a heatmap for RQVs to show log2(FC) and significance
+
+``` r
+#Generate heatmap with average fold change and pvalues
+library(dplyr)
+
+RQV_noNormalized_signif$Average_foldChange<-RQV_noNormalized_signif$Average_Condition1/RQV_noNormalized_signif$Average_Condition2
+
+RQV_noNormalized_signif <- as.data.frame(RQV_noNormalized_signif) %>%
+                                         mutate(pvalue_cutoff = ifelse(wilcox_pvalue < 0.05 , 
+                                                                       "wilcox pvalue < 0.05",
+                                                                       "wilcox pvalue > 0.05"))
+
+RQV_noNormalized_signif$log2FC<-log2(RQV_noNormalized_signif$Average_foldChange)
+
+#Create color palette for datapoints (log2 FC)
+#establish color palette for heatmap
+paletteLength <- 100
+colors <- colorRampPalette(c("purple","blue","grey90","orange","red"))(paletteLength)
+
+#Generate dotplot
+ggplot(RQV_noNormalized_signif,
+       aes(x=Condition1, 
+           y = Gene_Target, 
+           color = log2FC, 
+           shape = factor(pvalue_cutoff, c('wilcox pvalue > 0.05', 'wilcox pvalue < 0.05'))
+       )) + 
+  geom_point(size = 6)+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1,vjust=1))+
+  scale_color_gradientn(colors = colors,
+                        limits = c(-3,3)
+  )+ 
+  labs(color = "log2(Fold Change)",
+       shape = "Wilcox P-value Cutoff")+ 
+  theme(axis.text=element_text(size=15), 
+        axis.title.x=element_text(size=20), 
+        axis.title.y=element_text(size=20),
+        legend.title = element_text(size=18),
+        legend.text = element_text(size=14)) +
+  theme(axis.text.x = element_text(colour="black"), 
+        axis.text.y = element_text(colour="black"))
+
+ggsave("RQV no normalize average heatmap.png",
+       units = 'in', 
+       width = 7, 
+       height = 5.5)
+```
+
+<details><summary>Expected output</summary>
+<p>
+
+<br>
+<img src="https://github.com/jwvillain/quickPCR/blob/main/Figures/RQV no normalize average heatmap.png" width="700" height="550">
+
+</p>
+</details>
