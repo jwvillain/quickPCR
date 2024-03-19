@@ -363,7 +363,7 @@ Calculate p-values using the gene normalized RQVs.
 signif<-quickSignif(data_df = RQV_Normalize,
             reference_condition_char = "Control", #Character specifying the condition you want to compare to
             test_char = "wilcox", #Character specifying statistical test (wilcox or ttest)
-            data_input_num = 12 #Numeric specifying the column with data you want to use to calculate significance
+            data_input_num = 12) #Numeric specifying the column with data you want to use to calculate significance
 ```
 
 <details><summary>Expected output</summary>
@@ -504,7 +504,7 @@ Calculate p-values using the gene normalized AUs.
 signif<-quickSignif(data_df = AU_Normalize,
             reference_condition_char = "Control", #Character specifying the condition you want to compare to
             test_char = "wilcox", #Character specifying statistical test (wilcox or ttest)
-            data_input_num = 12 #Numeric specifying the column with data you want to use to calculate significance
+            data_input_num = 12) #Numeric specifying the column with data you want to use to calculate significance
 ```
 
 <details><summary>Expected output</summary>
