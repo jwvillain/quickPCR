@@ -658,7 +658,7 @@ library(circlize)
 library(dplyr)
 
 #establish color palette for heatmap
-col_fun = colorRamp2(c(-3,-1.5, 0, 1.5,3), c("purple","blue", "white","orange", "red")) numeric values based off of min, max values of Z-scores
+col_fun = colorRamp2(c(-3,-1.5, 0, 1.5,3), c("purple","blue", "white","orange", "red")) #numeric values based off of min, max values of Z-scores
 col_fun(seq(-3, 3))
 
 
